@@ -24,7 +24,7 @@ pipeline {
   }
   
   environment {
-    registry = "https://gitlabroadshow.jfrog.io/ssn-docker"
+    registry = "https://gitlabroadshow.jfrog.io/"
     registryCredential = 'jfrog-secret'
     dockerImage = ''
   }
@@ -34,11 +34,10 @@ pipeline {
       steps {
         container('docker') {
           script {
-            script {
-                docker.withRegistry( registry, registryCredential ) {
-                    docker.build('ssn-docker', './').push()
-                }
-            }
+            docker.build('ssn-docker', './')
+            artServer = Artifactory.newServer(url: registry, credentialsId: registryCredential)
+            artDocker = Artifactory.docker(server: artServer)
+            artDocker.push(registry:'latest', 'ssn-docker')
           }
         }
       }
