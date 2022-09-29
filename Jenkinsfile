@@ -28,7 +28,7 @@ pipeline {
       steps {
         container('docker') {
             rtServer (
-                id: "ARTIFACTORY_SERVER",
+                id: "JFrog SaaS",
                 url: "https://gitlabroadshow.jfrog.io/",
                 credentialsId: "artifactory"
             )
@@ -36,9 +36,10 @@ pipeline {
                 docker.build('ssn-docker-local' + '/ssn:latest', './')
             }
             rtDockerPush(
-                serverId: "ARTIFACTORY_SERVER",
+                serverId: "JFrog SaaS",
                 image: 'ssn-docker-local' + '/ssn:latest',
                 targetRepo: 'ssn-docker-local',
+                credentialsId: "artifactory"
             )
         }
       }
