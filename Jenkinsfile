@@ -36,7 +36,7 @@ pipeline {
           script {
             script {
                 docker.withRegistry( registry, registryCredential ) {
-                    docker.build('ssn', './Dockerfile').push()
+                    docker.build('ssn', './').push()
                 }
             }
           }
