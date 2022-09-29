@@ -24,7 +24,7 @@ pipeline {
   }
   
   environment {
-    registry = "gitlabroadshow.jfrog.io/ssn-docker-local"
+    registry = "https://gitlabroadshow.jfrog.io/ssn-docker-local"
     registryCredential = 'jfrog-secret'
     dockerImage = ''
   }
