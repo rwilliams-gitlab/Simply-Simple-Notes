@@ -30,7 +30,6 @@ pipeline {
             rtServer (
                 id: "JFrog SaaS",
                 url: "https://gitlabroadshow.jfrog.io/",
-                credentialsId: "artifactory"
             )
             script {
                 docker.build('ssn-docker-local' + '/ssn:latest', './')
@@ -39,7 +38,6 @@ pipeline {
                 serverId: "JFrog SaaS",
                 image: 'ssn-docker-local' + '/ssn:latest',
                 targetRepo: 'ssn-docker-local',
-                credentialsId: "artifactory"
             )
         }
       }
