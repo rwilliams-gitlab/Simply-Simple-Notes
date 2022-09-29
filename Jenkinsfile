@@ -32,11 +32,11 @@ pipeline {
                 url: "https://gitlabroadshow.jfrog.io/",
             )
             script {
-                docker.build('https://gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest', './')
+                docker.build('gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest', './')
             }
             rtDockerPush(
                 serverId: "JFrog SaaS",
-                image: 'https://gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest',
+                image: 'gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest',
                 targetRepo: 'ssn-docker-local',
             )
         }
