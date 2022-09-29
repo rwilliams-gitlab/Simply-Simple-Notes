@@ -8,7 +8,9 @@ pipeline {
         spec:
           containers:
           - name: docker
-            image: jnlp-slave:latest
+            image: npalm/dind-java:latest
+            command:
+            - cat
             tty: true
             volumeMounts:
              - mountPath: /var/run/docker.sock
