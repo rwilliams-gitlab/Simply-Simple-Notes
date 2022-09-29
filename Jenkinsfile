@@ -35,8 +35,9 @@ pipeline {
         container('docker') {
           script {
             script {
-                def customImage = docker.build("my-image:${env.BUILD_ID}")
-                customImage.push()
+                docker.withRegistry( registry, registryCredential ) {
+                    docker.build('ssn', './Dockerfile').push()
+                }
             }
           }
         }
