@@ -34,10 +34,10 @@ pipeline {
       steps {
         container('docker') {
           script {
-            docker.build('ssn-docker', './')
+            image = docker.build('ssn-docker', './')
             artServer = Artifactory.newServer(url: registry, credentialsId: registryCredential)
             artDocker = Artifactory.docker(server: artServer)
-            artDocker.push('https://gitlabroadshow.jfrog.io/latest', 'ssn-docker')
+            artDocker.push('https://gitlabroadshow.jfrog.io/latest', image, 'ssn-docker')
           }
         }
       }
