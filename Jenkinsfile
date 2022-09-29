@@ -6,15 +6,15 @@ pipeline {
             apiVersion: v1
             kind: Pod
             spec:
-                containers:
-                - name: jnlp
-                    image: jnlp-slave:latest
-                    volumeMounts:
-                    - name: docker
-                        mountPath: /var/run/docker.sock
-                volumes:
-                - name: docker
-                    hostPath: { path: /var/run/docker.sock }
+              containers:
+              - name: jnlp
+                  image: jnlp-slave:latest
+                  volumeMounts:
+                  - name: docker
+                      mountPath: /var/run/docker.sock
+              volumes:
+              - name: docker
+                hostPath: { path: /var/run/docker.sock }
         """
     //   yaml '''
     //     apiVersion: v1
