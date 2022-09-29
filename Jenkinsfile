@@ -2,24 +2,40 @@ pipeline {
   
   agent {
     kubernetes {
-      yaml '''
-        apiVersion: v1
-        kind: Pod
-        spec:
-          containers:
-          - name: docker
-            image: docker:latest
-            command:
-            - cat
-            tty: true
-            volumeMounts:
-             - mountPath: /var/run/docker.sock
-               name: docker-sock
-          volumes:
-          - name: docker-sock
-            hostPath:
-              path: /var/run/docker.sock
-        '''
+        yaml """
+            apiVersion: v1
+            kind: Pod
+            metadata:
+                namespace: devops-tools
+            spec:
+            containers:
+            - name: jnlp
+                image: registry/jnlp-slave:latest
+                volumeMounts:
+                - name: docker
+                    mountPath: /var/run/docker.sock
+            volumes:
+            - name: docker
+                hostPath: { path: /var/run/docker.sock }
+        """
+    //   yaml '''
+    //     apiVersion: v1
+    //     kind: Pod
+    //     spec:
+    //       containers:
+    //       - name: docker
+    //         image: docker:latest
+    //         command:
+    //         - cat
+    //         tty: true
+    //         volumeMounts:
+    //          - mountPath: /var/run/docker.sock
+    //            name: docker-sock
+    //       volumes:
+    //       - name: docker-sock
+    //         hostPath:
+    //           path: /var/run/docker.sock
+    //     '''
     }
   }
 
@@ -34,7 +50,6 @@ pipeline {
             )
             script {
                 docker.build('ssn-docker-local' + '/ssn:latest', './')
-                java
             }
             rtDockerPush(
                 serverId: "ARTIFACTORY_SERVER",
