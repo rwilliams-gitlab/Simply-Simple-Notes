@@ -1,21 +1,42 @@
-podTemplate(label: 'ssn-node', cloud: 'kubernetes', serviceAccount: 'jenkins-admin',
-  containers: [
-    containerTemplate(name: 'docker', image: 'moby/buildkit:master', ttyEnabled: true, command: 'cat', privileged: true,
-        envVars: [secretEnvVar(key: 'DOCKER_USERNAME', secretName: 'docker-hub-credentials', secretKey: 'username'),
-    ]),
-    containerTemplate(name: 'kubectl', image: 'roffe/kubectl', ttyEnabled: true, command: 'cat'),
-  ]) {
-    node('ssn-node') {
-        stage('Prepare') {
-            checkout scm
+pipeline {
+  agent {
+    kubernetes {
+      label 'ssn-demo'
+      defaultContainer 'jnlp'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  - name: docker
+    image: docker:latest
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-sock
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+    - name: m2
+      persistentVolumeClaim:
+        claimName: m2
+"""
+}
+   }
+  stages {
+    stage('Build') {
+      steps {
+        container('docker') {
+          sh """
+             docker build .
+          """
         }
-
-        stage('Build Docker Image') {
-            container('docker') {
-                sh """
-                  docker build .
-                """
-            }
-        }
+      }
     }
+  }
 }
