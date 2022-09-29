@@ -2,38 +2,22 @@ pipeline {
   
   agent {
     kubernetes {
-        yaml """
-            apiVersion: v1
-            kind: Pod
-            spec:
-              containers:
-              - name: jnlp
-                  image: jnlp-slave:latest
-                  volumeMounts:
-                  - name: docker
-                      mountPath: /var/run/docker.sock
-              volumes:
-              - name: docker
-                hostPath: { path: /var/run/docker.sock }
-        """
-    //   yaml '''
-    //     apiVersion: v1
-    //     kind: Pod
-    //     spec:
-    //       containers:
-    //       - name: docker
-    //         image: docker:latest
-    //         command:
-    //         - cat
-    //         tty: true
-    //         volumeMounts:
-    //          - mountPath: /var/run/docker.sock
-    //            name: docker-sock
-    //       volumes:
-    //       - name: docker-sock
-    //         hostPath:
-    //           path: /var/run/docker.sock
-    //     '''
+      yaml '''
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+          - name: docker
+            image: jnlp-slave:latest
+            tty: true
+            volumeMounts:
+             - mountPath: /var/run/docker.sock
+               name: docker-sock
+          volumes:
+          - name: docker-sock
+            hostPath:
+              path: /var/run/docker.sock
+        '''
     }
   }
 
