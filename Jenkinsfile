@@ -7,8 +7,7 @@ pipeline {
 apiVersion: v1
 kind: Pod
 metadata:
-labels:
-  component: ci
+  namespace: devops-tools
 spec:
   - name: docker
     image: docker:latest
