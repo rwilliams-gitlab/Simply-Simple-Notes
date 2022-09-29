@@ -34,7 +34,7 @@ pipeline {
             )
             script {
                 docker.build('ssn-docker-local' + '/ssn:latest', './')
-                echo $JAVA_HOME
+                java
             }
             rtDockerPush(
                 serverId: "ARTIFACTORY_SERVER",
