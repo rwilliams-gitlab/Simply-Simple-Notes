@@ -22,7 +22,7 @@ pipeline {
         '''
     }
   }
-  
+
   stages {
     stage('Build-Docker-Image') {
       steps {
@@ -33,12 +33,12 @@ pipeline {
                 credentialsId: "jfrog-secret"
             )
             script {
-                docker.build('ssn-docker' + '/ssn:latest', './')
+                docker.build('ssn-docker-local' + '/ssn:latest', './')
             }
             rtDockerPush(
                 serverId: "ARTIFACTORY_SERVER",
-                image: 'ssn-docker' + '/ssn:latest',
-                targetRepo: 'ssn-docker',
+                image: 'ssn-docker-local' + '/ssn:latest',
+                targetRepo: 'ssn-docker-local',
             )
         }
       }
