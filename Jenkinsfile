@@ -8,15 +8,15 @@ pipeline {
             metadata:
                 namespace: devops-tools
             spec:
-            containers:
-            - name: jnlp
-                image: registry/jnlp-slave:latest
-                volumeMounts:
+                containers:
+                - name: jnlp
+                    image: jnlp-slave:latest
+                    volumeMounts:
+                    - name: docker
+                        mountPath: /var/run/docker.sock
+                volumes:
                 - name: docker
-                    mountPath: /var/run/docker.sock
-            volumes:
-            - name: docker
-                hostPath: { path: /var/run/docker.sock }
+                    hostPath: { path: /var/run/docker.sock }
         """
     //   yaml '''
     //     apiVersion: v1
