@@ -30,7 +30,7 @@ pipeline {
             rtServer (
                 id: "ARTIFACTORY_SERVER",
                 url: "https://gitlabroadshow.jfrog.io/",
-                credentialsId: "jfrog-secret"
+                credentialsId: "artifactory"
             )
             script {
                 docker.build('ssn-docker-local' + '/ssn:latest', './')
