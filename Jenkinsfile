@@ -1,4 +1,5 @@
 pipeline {
+  
   agent {
     kubernetes {
       yaml '''
@@ -17,15 +18,27 @@ pipeline {
           volumes:
           - name: docker-sock
             hostPath:
-              path: /var/run/docker.sock    
+              path: /var/run/docker.sock
         '''
     }
   }
+  
+  environment {
+    registry = "gitlabroadshow.jfrog.io/ssn-docker-local"
+    registryCredential = 'jfrog-secret'
+    dockerImage = ''
+  }
+
   stages {
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build .'
+          script {
+            dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
+          }
         }
       }
     }
