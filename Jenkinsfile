@@ -27,32 +27,29 @@ pipeline {
             '''
         }
     }
-
-    stages {
-        stages('do everything in docker') {
-            container('docker') {
-                stage('Build and publish Image') {
-                    steps {
-                        rtServer (
-                            id: "JFrog SaaS",
-                            url: "https://gitlabroadshow.jfrog.io/",
-                        )
-                        script {
-                            docker.build('gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest', './')
-                        }
-                        rtDockerPush(
-                            serverId: "JFrog SaaS",
-                            image: 'gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest',
-                            targetRepo: 'ssn-docker-local',
-                        )
+    stages('do everything in docker') {
+        container('docker') {
+            stage('Build and publish Image') {
+                steps {
+                    rtServer (
+                        id: "JFrog SaaS",
+                        url: "https://gitlabroadshow.jfrog.io/",
+                    )
+                    script {
+                        docker.build('gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest', './')
                     }
+                    rtDockerPush(
+                        serverId: "JFrog SaaS",
+                        image: 'gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest',
+                        targetRepo: 'ssn-docker-local',
+                    )
                 }
-                stage('Deploy to k8s') {
-                    steps {
-                        sh 'kubectl apply -f Manifests/deployment.yaml'
-                        sh 'kubectl version'
-                        sh 'kubectl -n devops-tools rollout restart deployments/ssn-app'
-                    }
+            }
+            stage('Deploy to k8s') {
+                steps {
+                    sh 'kubectl apply -f Manifests/deployment.yaml'
+                    sh 'kubectl version'
+                    sh 'kubectl -n devops-tools rollout restart deployments/ssn-app'
                 }
             }
         }
