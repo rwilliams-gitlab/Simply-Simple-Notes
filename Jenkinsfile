@@ -51,7 +51,7 @@ pipeline {
         steps {
             container('kctl') {
                 sh 'kubectl apply -f Manifests/deployment.yaml'
-                sh 'k version'
+                sh 'kubectl version'
                 sh 'kubectl -n devops-tools rollout restart deployments/ssn-app'
             }
         }
