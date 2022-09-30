@@ -29,33 +29,32 @@ pipeline {
   }
 
   stages {
-    stage('Build-Docker-Image') {
-      steps {
-        container('docker') {
-            rtServer (
-                id: "JFrog SaaS",
-                url: "https://gitlabroadshow.jfrog.io/",
-            )
-            script {
-                docker.build('gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest', './')
-            }
-            rtDockerPush(
-                serverId: "JFrog SaaS",
-                image: 'gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest',
-                targetRepo: 'ssn-docker-local',
-            )
+    container('docker') {
+        stage('Build-Docker-Image') {
+            steps {
+                rtServer (
+                    id: "JFrog SaaS",
+                    url: "https://gitlabroadshow.jfrog.io/",
+                )
+                script {
+                    docker.build('gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest', './')
+                }
+                rtDockerPush(
+                    serverId: "JFrog SaaS",
+                    image: 'gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest',
+                    targetRepo: 'ssn-docker-local',
+                )
         }
       }
     }
-    stage('Deploy to k8s') {
-        steps {
-            container('kctl') {
+    container('kctl') {
+        stage('Deploy to k8s') {
+            steps {
                 sh 'kubectl apply -f Manifests/deployment.yaml'
                 sh 'kubectl version'
                 sh 'kubectl -n devops-tools rollout restart deployments/ssn-app'
             }
         }
-        
     }
   }
 }
