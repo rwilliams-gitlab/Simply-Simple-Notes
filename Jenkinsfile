@@ -49,7 +49,7 @@ pipeline {
     }
     stage('Deploy to k8s') {
         container('kctl') {
-            kubectl apply -f Manifests/deployment.yaml
+            sh 'kubectl apply -f Manifests/deployment.yaml'
         }
     }
   }
