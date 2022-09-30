@@ -50,9 +50,7 @@ pipeline {
     stage('Deploy to k8s') {
         steps {
             container('kctl') {
-                sh 'apt-get update && apt-get install kubectl'
                 sh 'kubectl apply -f Manifests/deployment.yaml'
-                sh 'kubectl version'
                 sh 'kubectl -n devops-tools rollout restart deployments/ssn-app'
             }
         }
