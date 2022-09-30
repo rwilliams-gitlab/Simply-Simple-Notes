@@ -29,9 +29,9 @@ pipeline {
   }
 
   stages {
-    container('docker') {
-        stage('Build-Docker-Image') {
-            steps {
+    stage('Build-Docker-Image') {
+        steps {
+            container('docker') {
                 rtServer (
                     id: "JFrog SaaS",
                     url: "https://gitlabroadshow.jfrog.io/",
@@ -44,12 +44,12 @@ pipeline {
                     image: 'gitlabroadshow.jfrog.io/ssn-docker-local' + '/ssn:latest',
                     targetRepo: 'ssn-docker-local',
                 )
+            }
         }
-      }
     }
-    container('kctl') {
-        stage('Deploy to k8s') {
-            steps {
+    stage('Deploy to k8s') {
+        steps {
+            container('kctl') {
                 sh 'kubectl apply -f Manifests/deployment.yaml'
                 sh 'kubectl version'
                 sh 'kubectl -n devops-tools rollout restart deployments/ssn-app'
