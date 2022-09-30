@@ -49,7 +49,7 @@ pipeline {
     }
     stage('Deploy to k8s') {
         steps {
-            container('docker') {
+            container('kctl') {
                 sh 'apt-get update && apt-get install kubectl'
                 sh 'kubectl apply -f Manifests/deployment.yaml'
                 sh 'kubectl version'
