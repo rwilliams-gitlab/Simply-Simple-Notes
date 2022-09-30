@@ -15,6 +15,11 @@ pipeline {
             volumeMounts:
              - mountPath: /var/run/docker.sock
                name: docker-sock
+          -name: kctl
+            image: roffe/kubectl
+            command:
+            - cat
+            tty: true
           volumes:
           - name: docker-sock
             hostPath:
@@ -41,6 +46,11 @@ pipeline {
             )
         }
       }
+    }
+    stage('Deploy to k8s') {
+        container('kctl') {
+            kubectl apply -f Manifests/deployment.yaml
+        }
     }
   }
 }

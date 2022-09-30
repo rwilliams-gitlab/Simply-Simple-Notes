@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ssn-service
+  namespace: ssn-prd
+spec:
+  selector:
+    app: ssn-app
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 5000
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ssn-app
+  namespace: ssn-prd
+spec:
+  selector:
+    matchLabels:
+      app: ssn-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: ssn-app
+    spec:
+      containers:
+      - name: ssn-app
+        image: gitlabroadshow.jfrog.io/ssn-docker-local/ssn:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
