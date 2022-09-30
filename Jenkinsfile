@@ -15,7 +15,7 @@ pipeline {
             volumeMounts:
              - mountPath: /var/run/docker.sock
                name: docker-sock
-          -name: kctl
+          - name: kctl
             image: roffe/kubectl
             command:
             - cat
