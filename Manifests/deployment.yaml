@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ssn-service
-  namespace: ssn-prd
+  namespace: devops-tools
 spec:
   selector:
     app: ssn-app
@@ -18,7 +18,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ssn-app
-  namespace: ssn-prd
+  namespace: devops-tools
 spec:
   selector:
     matchLabels:
@@ -32,6 +32,6 @@ spec:
       containers:
       - name: ssn-app
         image: gitlabroadshow.jfrog.io/ssn-docker-local/ssn:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
