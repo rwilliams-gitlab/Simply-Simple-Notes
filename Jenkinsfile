@@ -29,7 +29,7 @@ pipeline {
     }
 
     stages {
-        stage('do everything in docker') {
+        stages('do everything in docker') {
             container('docker') {
                 stage('Build and publish Image') {
                     steps {
