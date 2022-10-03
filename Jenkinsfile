@@ -52,6 +52,7 @@ pipeline {
             container('kctl') {
                 sh 'kubectl apply -f Manifests/deployment.yaml'
                 sh 'kubectl -n devops-tools rollout restart deployments/ssn-app'
+                sh "kubectl get services --namespace devops-tools ssn-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'"
             }
         }
     }
