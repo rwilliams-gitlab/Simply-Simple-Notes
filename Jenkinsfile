@@ -27,6 +27,9 @@ pipeline {
     }
   }
   stages {
+    stage('Checkout sources') {
+        checkout scm // Checks out the repo where the Jenkinsfile is located
+    }
     stage('Build-Docker-Image') {
         steps {
             container('docker') {
