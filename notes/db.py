@@ -19,6 +19,7 @@ def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
+        connection.commit()
     except Error as e:
         print(e)
 
@@ -26,18 +27,20 @@ def create_table(conn, create_table_sql):
 def create_note(conn, notes):
     query = "INSERT INTO notes(data) VALUES(?)"
 
-    cur = conn.cursor()
-    cur.execute(query, notes)
+    c = conn.cursor()
+    c.execute(query, notes)
+    c.commit()
 
-    return cur.lastrowid
+    return c.lastrowid
 
 
 def delete_note(conn, id):
     query = 'DELETE FROM notes WHERE id=?'
     
-    cur = conn.cursor()
-    cur.execute(query, (id,))
-
+    c = conn.cursor()
+    c.execute(query, (id,))
+    c.commit()
+    
     conn.commit()
 
 def select_note_by_id(conn, id=None):

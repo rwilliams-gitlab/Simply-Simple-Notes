@@ -27,7 +27,7 @@ pipeline {
     }
   }
   stages {
-    stage('Build-Docker-Image') {
+    stage('Build and Publish') {
         steps {
             container('docker') {
                 rtServer (
