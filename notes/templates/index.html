@@ -5,31 +5,13 @@
     
     {% block content %}
     <body>
+        <link href="static/style.css" rel="stylesheet" type="text/css" media="all">
+
         <center>
-            <h1>GitLab Simply Simple Notes</h1>
-            <!-- <img src="/static/images/gitlab-icon-rgb.png" alt="gitlab_logo" class="img-thumbnail"> -->
-
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-
-            <hr>
-
-            <h3><b>My notes</b></h3>
-
-            {% for note in notes %}
-            <div><p><b>{{ note }}</b></p></div>
-            {% endfor %}
-
-            <hr>
+            <div class="image"><img src="static/images/gitlab-logo-100.png"><h2>Simply Simply Notes</h2></div>
             
-            <h3>Add a new note</h3>
+
+            <!-- Add a note -->
             <form class="form-inline" action="" method="post" novalidate>
                 {{ add_form.hidden_tag() }}
                 <p>
@@ -38,10 +20,7 @@
                     {{ add_form.add() }}
                 </p>
             </form>
-
-            <hr>
-
-            <h3>Delete an old note</h3>
+            <!-- Delete a note -->
             <form class="form-inline" action="" method="post" novalidate>
                 {{ delete_form.hidden_tag() }}
                 <p>
@@ -49,10 +28,22 @@
                     {{ delete_form.id_field(size=2) }}
                     {{ delete_form.delete() }}
                 </p>
-            </form>
-
-            <hr>
-
+            </form>    
+            <!-- Display messages about adding/deleting notes -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            
+            <!-- Display all notes in list -->
+            {% for note in notes %}
+                <div class="notes"><p>{{ note }}</p></div>
+            {% endfor %}
         </center>
     </body>
     {% endblock %}
